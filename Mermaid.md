@@ -1,8 +1,11 @@
 sequenceDiagram
+    participant user
+    participant webpage
+    participant server
 
-    User->>Webpage: Enters note text
-    Webpage-->>Server: Sends note data POST https://studies.cs.helsinki.fi/exampleapp/new_note
-    Server-->>Webpage: Receives note data
-    Webpage-->>User: Shows success message
-    User->>Webpage: Clicks submit button
-    Webpage-->>Webpage: Validates input
+    user->>webpage: Enters note text
+    webpage-->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    server-->>webpage: Receives note data
+    webpage-->>user: Shows success message
+    user->>webpage: Clicks submit button
+    webpage-->>webpage: Validates input
