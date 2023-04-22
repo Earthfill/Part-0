@@ -9,7 +9,7 @@ function App() {
 
   const [showDetails, setShowDetails] = useState(false);
 
-  const [weather, setWeather] = useState([])
+  const [weather, setWeather] = useState(null)
 
   useEffect(() => {
     countryService
@@ -21,7 +21,6 @@ function App() {
   }, [])
 
   const getWeatherData = (city) => {
-    const capital = country.capital;
     countryService
       .getApi(capital)
       .then(initialWeather => {

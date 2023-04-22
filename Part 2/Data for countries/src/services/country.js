@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const baseUrl = 'https://restcountries.com/v3.1/all'
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q='
-const apiKey = '53acceaf1dc75776faef8f5dcc133548';
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -10,7 +10,7 @@ const getAll = () => {
 }
 
 const getApi = (city) => {
-  const request = axios.get(`${apiUrl}${city}&APPID=${apiKey}`)
+  const request = axios.get(`${apiUrl}${city}&APPID=${API_KEY}`)
   return request.then(response => response.data)
 }
 
