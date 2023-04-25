@@ -75,7 +75,7 @@ function App() {
             setTimeout(() => {
               setErrorMessage(null);
             }, 5000);
-            setPersons(persons.filter(n => n.id === id))
+            setPersons(persons.filter(n => n.id !== n.id))
           })
       } 
   }
