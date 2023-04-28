@@ -48,31 +48,31 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
-  if (!body.name || !body.number) {
-    return response.status(400).json({ 
-      error: 'content missing' 
-    })
-  } 
+  if (!body.number || !body.number.match(/^[0-9-]+$/) || body.number.length < 8) {
+    return response.status(400).json({ error: 'Invalid phone number. A phone number must have a length of 8 or more and consist of numbers and hyphens (-).' })
+  }
   
-  Person.findOne({ name: body.name }).then(person => {
-    if (person) {
-      return response.status(409).json({
-        error: 'Note already exists in the database'
-      })
-    } else {
+  Person.findOne({ name: body.name })
+    .then(existingPerson => {
+      if (existingPerson) {
+        return response.status(409).json({ error: 'Person already exists in the database' })
+      }
+
       const person = new Person({
         name: body.name,
         number: body.number
       })
 
-      person.save().then(savedPerson => {
+    person.save()
+      .then(savedPerson => {
         response.json(savedPerson)
       })
-    }
+      .catch(error => next(error))
   })
+  .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -84,7 +84,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: body.number
   }
 
-  Person.findByIdAndUpdate(id, person, { new: true })
+  Person.findByIdAndUpdate(id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       response.json(updatedPerson)
     })
@@ -111,7 +111,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
 
   next(error)
 }

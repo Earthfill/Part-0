@@ -1,15 +1,15 @@
 GET http://localhost:3001/api/persons
 
 ###
-GET http://localhost:3001/api/persons/1
+GET http://localhost:3001/api/persons/64498cc29d8e2d32a2c8fd03
 
 ###
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Arnau Gomes",
-  "number": "0706-527-9144"
+  "name": "Ada Lovelace",
+  "number": "080-666-419-123"
 }
 
 ###
