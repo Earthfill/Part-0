@@ -1,48 +1,27 @@
+require('dotenv').config();
 const express = require('express')
 const morgan = require('morgan');
+const cors = require('cors')
+
+const Person = require('./models/person');
 
 const app = express()
 
 morgan.token('body', (request) => JSON.stringify(request.body));
 
-// const requestLogger = (request, response, next) => {
-//   console.log('Method:', request.method)
-//   console.log('Path:  ', request.path)
-//   console.log('Body:  ', request.body)
-//   console.log('---')
-//   next()
-// }
-
-// const unknownEndpoint = (request, response) => {
-//   response.status(404).send({ error: 'unknown endpoint' })
-// }
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
 
 app.use(express.json())
+app.use(express.static('build'))
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body'));
-// app.use(requestLogger)
-
-let data = [
-  { 
-    "id": 1,
-    "name": "Arto Hellas", 
-    "number": "040-123456"
-  },
-  { 
-    "id": 2,
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
-  },
-  { 
-    "id": 3,
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
-  },
-  { 
-    "id": 4,
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
-  }
-]
+app.use(cors())
+app.use(requestLogger)
 
 app.get('/info', (request, response) => {
   const now = new Date();
@@ -51,34 +30,23 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(data)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = data.find(person => person.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/persons/:id', (request, response, next) => {
+  const id = request.params.id
+  Person.findById(id)
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
-
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  data = data.filter(person => person.id !== id)
-
-  response.status(204).end()
-})
-
-const generateId = () => {
-  const min = 1;
-  const max = 50;
-  const randomId = data.length > 0
-    ? Math.floor(Math.random(...data.map(n => n.id)) * (max - min + 1))
-    : 0
-  return randomId
-}
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -89,27 +57,68 @@ app.post('/api/persons', (request, response) => {
     })
   } 
   
-  const nameExists = data.find(person => person.name === body.name)
-  if (nameExists) {
-    return response.status(404).json({
-      error: 'name must be unique'
-    })
-  }
+  Person.findOne({ name: body.name }).then(person => {
+    if (person) {
+      return response.status(409).json({
+        error: 'Note already exists in the database'
+      })
+    } else {
+      const person = new Person({
+        name: body.name,
+        number: body.number
+      })
+
+      person.save().then(savedPerson => {
+        response.json(savedPerson)
+      })
+    }
+  })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const id = request.params.id
+  const body = request.body
 
   const person = {
-    id: generateId(),
     name: body.name,
     number: body.number
   }
 
-  data = data.concat(person)
-
-  response.json(person)
+  Person.findByIdAndUpdate(id, person, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
-// app.use(unknownEndpoint)
+app.delete('/api/persons/:id', (request, response, next) => {
+  const id = request.params.id
+  Person.findByIdAndRemove(id)
+    .then(deletedPerson => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
+})
 
-const PORT = 3001
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
+
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

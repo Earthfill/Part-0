@@ -13,4 +13,13 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/persons/1
+PUT http://localhost:3001/api/persons/64498dee5e33c19eeeb95026
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "number": "080-666-419-123"
+}
+
+###
+DELETE http://localhost:3001/api/persons/64498dee5e33c19eeeb95026
