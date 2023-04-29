@@ -25,8 +25,15 @@ app.use(requestLogger)
 
 app.get('/info', (request, response) => {
   const now = new Date();
-  const entries = data.length;
-  response.send(`<p>Phonebook has info for ${entries} people</p><p>${now}</p>`)
+  
+  Person.countDocuments()
+    .then(count => {
+      response.send(`<p>Phonebook has info for ${count} people</p><p>${now}</p>`)
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(500).send("Internal Server Error")
+    })
 })
 
 app.get('/api/persons', (request, response) => {
@@ -94,7 +101,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Person.findByIdAndRemove(id)
-    .then(deletedPerson => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))

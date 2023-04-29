@@ -8,8 +8,8 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Ada Lovelace",
-  "number": "080-666-419-123"
+  "name": "Gianni Mavropanos",
+  "number": "080-6664191"
 }
 
 ###
