@@ -1,0 +1,12 @@
+GET http://localhost:3003/blogs
+
+###
+POST http://localhost:3003/blogs
+Content-Type: application/json
+
+{
+  "title": "Hand of god",
+  "author": "Liam Rosenior",
+  "url": "http://fantasy_ebook.com/",
+  "likes": "50"
+}
