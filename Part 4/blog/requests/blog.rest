@@ -3,12 +3,14 @@ GET http://localhost:3003/blogs
 ###
 POST http://localhost:3003/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MWZlY2ZhZTc5NjM5ZDdjMzk2MjhmIiwiaWF0IjoxNjgzMTIwNzI0LCJleHAiOjE2ODMxMjQzMjR9.se5Lt1UopKGm4cjMmisrNSw7paLvD4K-YtkKGBQFdwg
 
 {
-  "title": "Hand of god",
+  "title": "Lokis deception",
   "author": "Liam Rosenior",
   "url": "http://fantasy_ebook.com/",
-  "likes": "50"
+  "likes": "50",
+  "userId": "6451fecfae79639d7c39628f"
 }
 
 ###
@@ -17,4 +19,31 @@ Content-Type: application/json
 
 {
   "title": "Arm of god"
+}
+
+###
+DELETE  http://localhost:3003/blogs/6451fecfae79639d7c39628f
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MWZlY2ZhZTc5NjM5ZDdjMzk2MjhmIiwiaWF0IjoxNjgzMDk3NDIzLCJleHAiOjE2ODMxMDEwMjN9.vX1gAGJKMStiVsQTgi2BPYCEDJ3MUAVsqM5bquiLBoE
+
+###
+GET http://localhost:3003/users
+
+###
+POST http://localhost:3003/users
+Content-Type: application/json
+
+{
+  "username": "jackie",
+  "name": "jack henny",
+  "password": "jhenny"
+}
+
+###
+POST http://localhost:3003/login
+Content-Type: application/json
+
+{
+  "username": "jackie",
+  "password": "jhenny"
 }
