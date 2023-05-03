@@ -3,28 +3,29 @@ GET http://localhost:3003/blogs
 ###
 POST http://localhost:3003/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MWZlY2ZhZTc5NjM5ZDdjMzk2MjhmIiwiaWF0IjoxNjgzMTIwNzI0LCJleHAiOjE2ODMxMjQzMjR9.se5Lt1UopKGm4cjMmisrNSw7paLvD4K-YtkKGBQFdwg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MjljYzMwNjlhYTk3NWM0MmVkZWM2IiwiaWF0IjoxNjgzMTM1NzM2LCJleHAiOjE2ODMxMzkzMzZ9.c19pMa16lCqUKpwTWG-2OA8yJ2RnT4TTH7B4InUXlL0
 
 {
   "title": "Lokis deception",
   "author": "Liam Rosenior",
   "url": "http://fantasy_ebook.com/",
   "likes": "50",
-  "userId": "6451fecfae79639d7c39628f"
+  "userId": "64529cc3069aa975c42edec6"
 }
 
 ###
-PUT http://localhost:3003/blogs/6450a1dee2d0d8da12c4c081
+PUT http://localhost:3003/blogs/6452a470c3e6c8581b3b9907
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MjljYzMwNjlhYTk3NWM0MmVkZWM2IiwiaWF0IjoxNjgzMTM1NzM2LCJleHAiOjE2ODMxMzkzMzZ9.c19pMa16lCqUKpwTWG-2OA8yJ2RnT4TTH7B4InUXlL0
 
 {
   "title": "Arm of god"
 }
 
 ###
-DELETE  http://localhost:3003/blogs/6451fecfae79639d7c39628f
+DELETE  http://localhost:3003/blogs/6452a45fc3e6c8581b3b9901
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MWZlY2ZhZTc5NjM5ZDdjMzk2MjhmIiwiaWF0IjoxNjgzMDk3NDIzLCJleHAiOjE2ODMxMDEwMjN9.vX1gAGJKMStiVsQTgi2BPYCEDJ3MUAVsqM5bquiLBoE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphY2tpZSIsImlkIjoiNjQ1MjljYzMwNjlhYTk3NWM0MmVkZWM2IiwiaWF0IjoxNjgzMTM4OTczLCJleHAiOjE2ODMxNDI1NzN9.AcaWbtGQ7mcgoE38EuXVnFEBVnvdbFxEoMsVVYsKGrY
 
 ###
 GET http://localhost:3003/users
